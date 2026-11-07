@@ -8,12 +8,14 @@ class ProductScreen extends BaseScreen {
   // The rating row sits above the fold and exists only on this screen; Add to cart is below the fold.
   protected readonly anchor = byId('rattingLL')
 
+  // Title and price sit at the top of a scrolling page: scroll them back into view before reading,
+  // since the page may have been scrolled down to reach Add to cart.
   async title(): Promise<string> {
-    return this.textOf('productTV')
+    return (await $(scrollToId('productTV'))).getText()
   }
 
   async price(): Promise<number> {
-    return parsePrice(await this.textOf('priceTV'))
+    return parsePrice(await (await $(scrollToId('priceTV'))).getText())
   }
 
   async quantity(): Promise<number> {

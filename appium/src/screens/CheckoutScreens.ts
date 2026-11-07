@@ -2,14 +2,15 @@ import { $ } from '@wdio/globals'
 
 import { parsePrice } from '../data/catalog.js'
 import type { PAYMENT, SHIPPING } from '../data/users.js'
-import { byDesc, byId } from '../support/selectors.js'
+import { byDesc, byId, byText } from '../support/selectors.js'
 import { BaseScreen } from './BaseScreen.js'
 
 type Shipping = { -readonly [K in keyof typeof SHIPPING]: string }
 type Payment = { -readonly [K in keyof typeof PAYMENT]: string }
 
+// Anchors are the step headings at the top of each screen; the action buttons sit below the fold.
 class ShippingAddressScreen extends BaseScreen {
-  protected readonly anchor = byDesc('Saves user info for checkout')
+  protected readonly anchor = byText('Enter a shipping address')
 
   async fill(address: Partial<Shipping>) {
     const fields: Array<[keyof Shipping, string]> = [
@@ -33,6 +34,8 @@ class ShippingAddressScreen extends BaseScreen {
 
   /** Error messages currently shown under the required fields. */
   async visibleErrors(): Promise<string[]> {
+    // The submit button is at the bottom; scroll back to the top of the form before reading the errors.
+    await this.scrollToText('Enter a shipping address')
     const ids = ['fullNameErrorTV', 'address1ErrorTV', 'cityErrorTV', 'zipErrorTV', 'countryErrorTV']
     const errors: string[] = []
     for (const id of ids) {
@@ -44,7 +47,7 @@ class ShippingAddressScreen extends BaseScreen {
 }
 
 class PaymentScreen extends BaseScreen {
-  protected readonly anchor = byDesc('Saves payment info and launches screen to review checkout data')
+  protected readonly anchor = byText('Enter a payment method')
 
   async fill(card: Payment) {
     await this.type('nameET', card.fullName)
@@ -59,7 +62,7 @@ class PaymentScreen extends BaseScreen {
 }
 
 class ReviewOrderScreen extends BaseScreen {
-  protected readonly anchor = byDesc('Completes the process of checkout')
+  protected readonly anchor = byText('Review your order')
 
   async deliveryName(): Promise<string> {
     return this.textOf('fullNameTV')

@@ -11,11 +11,15 @@ class CartScreen extends BaseScreen {
   protected readonly anchor = `android=new UiSelector().resourceIdMatches("${APP_PACKAGE}:id/(cartBt|noItemTitleTV)")`
 
   /**
-   * One cart row by product name. Rows have no per-item id, so this is the one place an XPath is the
-   * clearest locator: the row container that holds the product's title.
+   * A control in the cart row of one product. Rows have no per-item id, so this is the one place an XPath
+   * is the clearest locator: from the product's title, up to the nearest ancestor that also holds the
+   * control, then down to it. Works whatever the row's internal nesting is.
    */
   private row(name: string, childId: string) {
-    return $(`//*[@resource-id="${rid('infoCL')}"][.//*[@text="${name}"]]//*[@resource-id="${rid(childId)}"]`)
+    return $(
+      `//*[@resource-id="${rid('titleTV')}" and @text="${name}"]` +
+        `/ancestor::*[.//*[@resource-id="${rid(childId)}"]][1]//*[@resource-id="${rid(childId)}"]`,
+    )
   }
 
   async isEmpty(): Promise<boolean> {
