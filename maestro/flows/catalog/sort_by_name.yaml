@@ -1,0 +1,34 @@
+appId: com.saucelabs.mydemoapp.android
+name: Sorting by name orders the first products alphabetically
+tags:
+  - catalog
+---
+- runFlow: ../../subflows/launch_fresh.yaml
+
+- tapOn: "Shows current sorting order and displays available sorting options"
+- tapOn: "Ascending order by name"
+- copyTextFrom:
+    id: "(.*:id/)?titleTV"
+    index: 0
+- evalScript: ${output.first = maestro.copiedText}
+- copyTextFrom:
+    id: "(.*:id/)?titleTV"
+    index: 1
+- evalScript: ${output.second = maestro.copiedText}
+- assertTrue:
+    condition: ${output.first.localeCompare(output.second) <= 0}
+    label: "A to Z: ${output.first} comes before ${output.second}"
+
+- tapOn: "Shows current sorting order and displays available sorting options"
+- tapOn: "Descending order by name"
+- copyTextFrom:
+    id: "(.*:id/)?titleTV"
+    index: 0
+- evalScript: ${output.first = maestro.copiedText}
+- copyTextFrom:
+    id: "(.*:id/)?titleTV"
+    index: 1
+- evalScript: ${output.second = maestro.copiedText}
+- assertTrue:
+    condition: ${output.first.localeCompare(output.second) >= 0}
+    label: "Z to A: ${output.first} comes after ${output.second}"

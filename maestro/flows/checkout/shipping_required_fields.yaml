@@ -1,0 +1,28 @@
+appId: com.saucelabs.mydemoapp.android
+name: The shipping step refuses to continue with required fields empty
+tags:
+  - checkout
+---
+- runFlow: ../../subflows/launch_fresh.yaml
+- runFlow:
+    file: ../../subflows/add_to_cart.yaml
+    env:
+      PRODUCT: "Sauce Labs Backpack"
+- tapOn: "View cart"
+- tapOn: "Confirms products for checkout"
+- runFlow:
+    file: ../../subflows/login.yaml
+    env:
+      USERNAME: "bod@example.com"
+      PASSWORD: "10203040"
+- assertVisible: "Enter a shipping address"
+
+- scrollUntilVisible:
+    element: "Saves user info for checkout"
+- tapOn: "Saves user info for checkout"
+
+- assertNotVisible: "Enter a payment method"
+- scrollUntilVisible:
+    element: "Please provide your full name."
+    direction: UP
+- assertVisible: "Please provide your full name."

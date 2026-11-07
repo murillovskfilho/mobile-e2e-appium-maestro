@@ -1,0 +1,14 @@
+# Fills the login form and submits. Usage: runFlow with env USERNAME and PASSWORD (either may be empty).
+appId: com.saucelabs.mydemoapp.android
+---
+- assertVisible: "Tap to login with given credentials"
+- tapOn:
+    id: "(.*:id/)?nameET"
+- eraseText
+- inputText: ${USERNAME}
+- tapOn:
+    id: "(.*:id/)?passwordET"
+- eraseText
+- inputText: ${PASSWORD}
+- hideKeyboard
+- tapOn: "Tap to login with given credentials"

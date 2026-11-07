@@ -1,0 +1,26 @@
+# From anywhere in the app: opens the catalog, finds PRODUCT, sets QUANTITY (default 1) and adds it to the cart.
+appId: com.saucelabs.mydemoapp.android
+env:
+  QUANTITY: "1"
+---
+- runFlow:
+    file: open_menu_item.yaml
+    env:
+      MENU_ITEM: "Catalog"
+- scrollUntilVisible:
+    element:
+      text: ${PRODUCT}
+    direction: DOWN
+    timeout: 20000
+- tapOn: ${PRODUCT}
+- assertVisible:
+    id: "(.*:id/)?productTV"
+    text: ${PRODUCT}
+- repeat:
+    times: ${Number(QUANTITY) - 1}
+    commands:
+      - tapOn: "Increase item quantity"
+- scrollUntilVisible:
+    element: "Tap to add product to cart"
+    direction: DOWN
+- tapOn: "Tap to add product to cart"

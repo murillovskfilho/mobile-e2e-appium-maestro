@@ -1,0 +1,48 @@
+# From a filled cart, as a guest: logs in, fills shipping and payment, and stops on the review screen.
+appId: com.saucelabs.mydemoapp.android
+---
+- tapOn: "View cart"
+- tapOn: "Confirms products for checkout"
+
+# A guest is sent to login first, then back to the shipping step.
+- runFlow:
+    file: login.yaml
+    env:
+      USERNAME: "bod@example.com"
+      PASSWORD: "10203040"
+
+- assertVisible: "Enter a shipping address"
+- tapOn: { id: "(.*:id/)?fullNameET" }
+- inputText: "Rebecca Winter"
+- tapOn: { id: "(.*:id/)?address1ET" }
+- inputText: "Mandorley 112"
+- tapOn: { id: "(.*:id/)?cityET" }
+- inputText: "Truro"
+- scrollUntilVisible:
+    element: { id: "(.*:id/)?zipET" }
+- tapOn: { id: "(.*:id/)?zipET" }
+- inputText: "89750"
+- scrollUntilVisible:
+    element: { id: "(.*:id/)?countryET" }
+- tapOn: { id: "(.*:id/)?countryET" }
+- inputText: "United Kingdom"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Saves user info for checkout"
+- tapOn: "Saves user info for checkout"
+
+- assertVisible: "Enter a payment method"
+- tapOn: { id: "(.*:id/)?nameET" }
+- inputText: "Rebecca Winter"
+- tapOn: { id: "(.*:id/)?cardNumberET" }
+- inputText: "3258125675687891"
+- tapOn: { id: "(.*:id/)?expirationDateET" }
+- inputText: "0325"
+- tapOn: { id: "(.*:id/)?securityCodeET" }
+- inputText: "123"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Saves payment info and launches screen to review checkout data"
+- tapOn: "Saves payment info and launches screen to review checkout data"
+
+- assertVisible: "Review your order"

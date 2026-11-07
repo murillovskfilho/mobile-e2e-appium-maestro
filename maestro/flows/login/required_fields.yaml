@@ -1,0 +1,23 @@
+appId: com.saucelabs.mydemoapp.android
+name: Empty username and empty password are each reported on their own field
+tags:
+  - login
+---
+- runFlow: ../../subflows/launch_fresh.yaml
+- runFlow:
+    file: ../../subflows/open_menu_item.yaml
+    env:
+      MENU_ITEM: "Log In"
+
+# Nothing typed: the username is reported first.
+- tapOn: "Tap to login with given credentials"
+- assertVisible: "Username is required"
+
+# Username only: now the password is the one reported.
+- tapOn:
+    id: "(.*:id/)?nameET"
+- inputText: "bod@example.com"
+- hideKeyboard
+- tapOn: "Tap to login with given credentials"
+- assertVisible: "Enter Password"
+- assertNotVisible: "Username is required"

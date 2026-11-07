@@ -1,0 +1,17 @@
+appId: com.saucelabs.mydemoapp.android
+name: A locked-out user is refused with a clear message
+tags:
+  - login
+---
+- runFlow: ../../subflows/launch_fresh.yaml
+- runFlow:
+    file: ../../subflows/open_menu_item.yaml
+    env:
+      MENU_ITEM: "Log In"
+- runFlow:
+    file: ../../subflows/login.yaml
+    env:
+      USERNAME: "alice@example.com"
+      PASSWORD: "10203040"
+- assertVisible: "Sorry this user has been locked out."
+- assertVisible: "Tap to login with given credentials"

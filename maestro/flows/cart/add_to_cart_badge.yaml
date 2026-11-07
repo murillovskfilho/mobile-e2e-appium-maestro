@@ -1,0 +1,16 @@
+appId: com.saucelabs.mydemoapp.android
+name: Adding a product updates the cart badge
+tags:
+  - smoke
+  - cart
+---
+- runFlow: ../../subflows/launch_fresh.yaml
+- assertNotVisible:
+    id: "(.*:id/)?cartTV"
+- runFlow:
+    file: ../../subflows/add_to_cart.yaml
+    env:
+      PRODUCT: "Sauce Labs Backpack"
+- assertVisible:
+    id: "(.*:id/)?cartTV"
+    text: "1"

@@ -1,0 +1,32 @@
+appId: com.saucelabs.mydemoapp.android
+name: The cart totals several products and quantities without rounding drift
+tags:
+  - cart
+---
+- runFlow: ../../subflows/launch_fresh.yaml
+- runFlow:
+    file: ../../subflows/add_to_cart.yaml
+    env:
+      PRODUCT: "Sauce Labs Backpack"
+      QUANTITY: "3"
+- runFlow:
+    file: ../../subflows/add_to_cart.yaml
+    env:
+      PRODUCT: "Sauce Labs Onesie"
+      QUANTITY: "2"
+- assertVisible:
+    id: "(.*:id/)?cartTV"
+    text: "5"
+
+- tapOn: "View cart"
+- assertVisible: "5 Items"
+
+- runScript:
+    file: ../../scripts/expected_total.js
+    env:
+      LINES: "29.99*3,7.99*2"
+- copyTextFrom:
+    id: "(.*:id/)?totalPriceTV"
+- assertTrue:
+    condition: ${maestro.copiedText == output.expectedTotal}
+    label: "Cart total ${maestro.copiedText} equals ${output.expectedTotal}"

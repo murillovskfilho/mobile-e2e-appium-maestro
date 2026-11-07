@@ -1,0 +1,16 @@
+appId: com.saucelabs.mydemoapp.android
+name: Removing the last item shows the empty cart state
+tags:
+  - cart
+---
+- runFlow: ../../subflows/launch_fresh.yaml
+- runFlow:
+    file: ../../subflows/add_to_cart.yaml
+    env:
+      PRODUCT: "Sauce Labs Bolt T-Shirt"
+- tapOn: "View cart"
+- tapOn: "Removes product from cart"
+- assertVisible: "No Items"
+- assertVisible: "Go Shopping"
+- assertNotVisible:
+    id: "(.*:id/)?cartTV"

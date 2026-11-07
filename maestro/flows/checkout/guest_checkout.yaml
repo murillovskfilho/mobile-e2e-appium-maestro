@@ -1,0 +1,32 @@
+appId: com.saucelabs.mydemoapp.android
+name: A guest is asked to log in, then completes an order end to end
+tags:
+  - smoke
+  - checkout
+---
+- runFlow: ../../subflows/launch_fresh.yaml
+- runFlow:
+    file: ../../subflows/add_to_cart.yaml
+    env:
+      PRODUCT: "Sauce Labs Backpack"
+- runFlow: ../../subflows/checkout_to_review.yaml
+
+# Review: delivery goes to the name we typed, and the total is the cart plus the flat $5.99 delivery.
+- assertVisible: "Rebecca Winter"
+- runScript:
+    file: ../../scripts/expected_total.js
+    env:
+      LINES: "29.99*1"
+      DELIVERY: "5.99"
+- scrollUntilVisible:
+    element:
+      id: "(.*:id/)?totalAmountTV"
+- copyTextFrom:
+    id: "(.*:id/)?totalAmountTV"
+- assertTrue:
+    condition: ${maestro.copiedText == output.expectedTotal}
+    label: "Order total ${maestro.copiedText} equals ${output.expectedTotal}"
+
+- tapOn: "Completes the process of checkout"
+- assertVisible: "Checkout Complete"
+- takeScreenshot: checkout_complete

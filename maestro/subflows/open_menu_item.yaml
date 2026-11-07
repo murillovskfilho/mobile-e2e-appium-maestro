@@ -1,0 +1,5 @@
+# Opens the side menu and taps an entry. Usage: runFlow with env MENU_ITEM ("Catalog", "Log In", ...).
+appId: com.saucelabs.mydemoapp.android
+---
+- tapOn: "View menu"
+- tapOn: ${MENU_ITEM}

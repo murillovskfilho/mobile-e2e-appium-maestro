@@ -1,0 +1,10 @@
+# Starts the app with its data cleared, so every flow begins with an empty cart and no login.
+appId: com.saucelabs.mydemoapp.android
+---
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- extendedWaitUntil:
+    visible: "Displays all products of catalog"
+    timeout: 30000

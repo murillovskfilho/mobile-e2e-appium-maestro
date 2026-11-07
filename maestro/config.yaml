@@ -1,0 +1,7 @@
+# Workspace configuration: which flows run and in what order.
+# Subflows in ./subflows are reusable steps, not tests, so they are not listed here.
+flows:
+  - "flows/**"
+
+executionOrder:
+  continueOnFailure: true

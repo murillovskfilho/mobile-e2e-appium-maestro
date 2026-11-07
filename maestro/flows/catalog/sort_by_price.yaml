@@ -1,0 +1,28 @@
+appId: com.saucelabs.mydemoapp.android
+name: Sorting by price puts the cheapest and the most expensive product first
+tags:
+  - catalog
+---
+- runFlow: ../../subflows/launch_fresh.yaml
+
+- tapOn: "Shows current sorting order and displays available sorting options"
+- tapOn: "Ascending order by price"
+- assertVisible:
+    id: "(.*:id/)?titleTV"
+    index: 0
+    text: "Sauce Labs Onesie"
+- assertVisible:
+    id: "(.*:id/)?priceTV"
+    index: 0
+    text: "\\$ 7\\.99"
+
+- tapOn: "Shows current sorting order and displays available sorting options"
+- tapOn: "Descending order by price"
+- assertVisible:
+    id: "(.*:id/)?priceTV"
+    index: 0
+    text: "\\$ 49\\.99"
+- assertVisible:
+    id: "(.*:id/)?titleTV"
+    index: 0
+    text: "Sauce Labs Fleece Jacket.*"

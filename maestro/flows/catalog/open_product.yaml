@@ -1,0 +1,20 @@
+appId: com.saucelabs.mydemoapp.android
+name: A product opens with the same name and price it had in the list
+tags:
+  - smoke
+  - catalog
+---
+- runFlow: ../../subflows/launch_fresh.yaml
+- scrollUntilVisible:
+    element: "Sauce Labs Backpack"
+    direction: DOWN
+- tapOn: "Sauce Labs Backpack"
+- assertVisible:
+    id: "(.*:id/)?productTV"
+    text: "Sauce Labs Backpack"
+- assertVisible:
+    id: "(.*:id/)?priceTV"
+    text: "\\$ 29\\.99"
+- assertVisible:
+    id: "(.*:id/)?noTV"
+    text: "1"

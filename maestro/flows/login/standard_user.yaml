@@ -1,0 +1,21 @@
+appId: com.saucelabs.mydemoapp.android
+name: A standard user logs in and lands on the catalog
+tags:
+  - smoke
+  - login
+---
+- runFlow: ../../subflows/launch_fresh.yaml
+- runFlow:
+    file: ../../subflows/open_menu_item.yaml
+    env:
+      MENU_ITEM: "Log In"
+- runFlow:
+    file: ../../subflows/login.yaml
+    env:
+      USERNAME: "bod@example.com"
+      PASSWORD: "10203040"
+- assertVisible: "Displays all products of catalog"
+# Logged in, the menu offers Log Out instead of Log In.
+- tapOn: "View menu"
+- assertVisible: "Log Out"
+- assertNotVisible: "Log In"
