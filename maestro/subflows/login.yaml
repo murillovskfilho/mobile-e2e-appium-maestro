@@ -1,14 +1,11 @@
-# Fills the login form and submits. Usage: runFlow with env USERNAME and PASSWORD (either may be empty).
+# Fills the login form and submits. Usage: runFlow with env USERNAME and PASSWORD.
+# Each field goes through fill_field.yaml, which closes the keyboard after typing: with the keyboard
+# still open, a tap on the next field may not take focus and the text lands in the previous one.
 appId: com.saucelabs.mydemoapp.android
 ---
 - assertVisible: "Tap to login with given credentials"
-- tapOn:
-    id: "(.*:id/)?nameET"
-- eraseText
-- inputText: ${USERNAME}
-- tapOn:
-    id: "(.*:id/)?passwordET"
-- eraseText
-- inputText: ${PASSWORD}
-- hideKeyboard
+- runFlow: { file: fill_field.yaml, env: { FIELD: "nameET", VALUE: "${USERNAME}" } }
+- runFlow: { file: fill_field.yaml, env: { FIELD: "passwordET", VALUE: "${PASSWORD}" } }
+- scrollUntilVisible:
+    element: "Tap to login with given credentials"
 - tapOn: "Tap to login with given credentials"
