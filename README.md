@@ -52,7 +52,7 @@ Why some scenarios exist in only one suite, and how I'd split the two tools on a
 - **Checked against the source.** Expected messages, prices and rules (quantity can reach zero, the flat
   delivery fee) were taken from the app's source code, not guessed from screenshots.
 - **Reproducible environment.** Pinned app version and checksum, pinned Appium, driver and Maestro
-  versions, and a cached emulator snapshot (API 34, Pixel 6 profile).
+  versions, and a cached emulator snapshot (API 31, Pixel 6 profile).
 
 ## Run it locally
 

@@ -3,6 +3,10 @@
 set -euo pipefail
 
 adb wait-for-device
+# No "isn't responding" or crash dialogs over the app: on a software-GPU emulator they cover the screen.
+adb shell settings put global hide_error_dialogs 1
+adb shell settings put global anr_show_background 0
+adb shell input keyevent 82   # unlock / wake
 adb shell getprop ro.build.version.release
 
 cd appium
