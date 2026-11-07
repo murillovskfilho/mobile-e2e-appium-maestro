@@ -5,6 +5,7 @@ appId: com.saucelabs.mydemoapp.android
     clearState: true
     permissions:
       all: allow
+# A cold start right after clearing data can take a while on a CI emulator (software GPU).
 - extendedWaitUntil:
     visible: "Displays all products of catalog"
-    timeout: 30000
+    timeout: 60000

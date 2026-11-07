@@ -30,14 +30,14 @@ describe('App lifecycle', () => {
   })
 
   it('stays in portrait when the device is rotated', async () => {
-    await driver.setOrientation('LANDSCAPE')
-    try {
-      // The app locks its activities to portrait, so the catalog must still be usable.
-      await catalogScreen.waitUntilShown()
-      const { width, height } = await driver.getWindowRect()
-      expect(height).toBeGreaterThan(width)
-    } finally {
-      await driver.setOrientation('PORTRAIT')
-    }
+    // The app locks its activities to portrait, so Android refuses the rotation.
+    const rotation = await driver.setOrientation('LANDSCAPE').then(
+      () => 'rotated',
+      (error: Error) => error.message,
+    )
+
+    expect(rotation).toContain('locked')
+    expect(await driver.getOrientation()).toBe('PORTRAIT')
+    await catalogScreen.waitUntilShown()
   })
 })

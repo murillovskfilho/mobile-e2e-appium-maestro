@@ -1,7 +1,7 @@
 import { $, $$ } from '@wdio/globals'
 
 import { parsePrice, SORT_OPTIONS, type SortOption } from '../data/catalog.js'
-import { byDesc, byId } from '../support/selectors.js'
+import { APP_PACKAGE, byDesc, byId } from '../support/selectors.js'
 import { BaseScreen } from './BaseScreen.js'
 import { header } from './Header.js'
 
@@ -24,9 +24,13 @@ class CatalogScreen extends BaseScreen {
     await this.waitUntilShown()
   }
 
+  /**
+   * Only the product image opens the product page; the title is not tappable. Scrolls the title into view,
+   * then taps the image of the same grid cell.
+   */
   async openProduct(name: string) {
-    const title = await this.scrollToText(name)
-    await title.click()
+    await this.scrollToText(name)
+    await $(`//*[@resource-id="${APP_PACKAGE}:id/titleTV" and @text="${name}"]/../*[@resource-id="${APP_PACKAGE}:id/productIV"]`).click()
   }
 }
 

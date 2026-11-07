@@ -12,7 +12,11 @@ env:
       text: ${PRODUCT}
     direction: DOWN
     timeout: 20000
-- tapOn: ${PRODUCT}
+    centerElement: true
+# Only the product image opens the product page; the title is not tappable.
+- tapOn:
+    id: "(.*:id/)?productIV"
+    above: ${PRODUCT}
 - assertVisible:
     id: "(.*:id/)?productTV"
     text: ${PRODUCT}

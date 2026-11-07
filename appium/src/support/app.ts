@@ -1,3 +1,5 @@
+import { $ } from '@wdio/globals'
+
 import { APP_PACKAGE } from './selectors.js'
 
 /**
@@ -7,6 +9,8 @@ import { APP_PACKAGE } from './selectors.js'
 export async function freshApp() {
   await driver.execute('mobile: clearApp', { appId: APP_PACKAGE })
   await driver.execute('mobile: activateApp', { appId: APP_PACKAGE })
+  // A cold start right after clearing data can take a while on a CI emulator (software GPU).
+  await $('~Displays all products of catalog').waitForDisplayed({ timeout: 60_000 })
 }
 
 /** Sends the app to the background for a while and brings it back, like a user switching apps. */
