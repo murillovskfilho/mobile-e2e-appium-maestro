@@ -1,25 +1,35 @@
-# From anywhere in the app: opens the catalog, finds PRODUCT, sets QUANTITY (default 1) and adds it to the cart.
+# From anywhere in the app: opens the catalog, sorts it so PRODUCT is the first card, sets QUANTITY
+# (default 1) and adds it to the cart.
+#
+# Why sort first: the app has a known, intentional crash when the 2nd card or the 7th onwards is tapped
+# (see appium/test/specs/known-defects.spec.ts). Sorting puts the product in the 1st card, which is safe.
+#   Sauce Labs Backpack -> SORT "Ascending order by name"
+#   Sauce Labs Onesie   -> SORT "Ascending order by price"
 appId: com.saucelabs.mydemoapp.android
 env:
   QUANTITY: "1"
+  SORT: "Ascending order by name"
 ---
 - runFlow:
     file: open_menu_item.yaml
     env:
       MENU_ITEM: "Catalog"
-- scrollUntilVisible:
-    element:
-      text: ${PRODUCT}
-    direction: DOWN
-    timeout: 20000
-    centerElement: true
+- tapOn: "Shows current sorting order and displays available sorting options"
+- tapOn: ${SORT}
+- assertVisible:
+    id: "(.*:id/)?titleTV"
+    index: 0
+    text: ${PRODUCT}
 # Only the product image opens the product page; the title is not tappable.
 - tapOn:
     id: "(.*:id/)?productIV"
-    above: ${PRODUCT}
+    index: 0
 - assertVisible:
     id: "(.*:id/)?productTV"
     text: ${PRODUCT}
+- scrollUntilVisible:
+    element: "Increase item quantity"
+    direction: DOWN
 - repeat:
     times: ${Number(QUANTITY) - 1}
     commands:

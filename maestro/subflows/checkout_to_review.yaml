@@ -1,4 +1,6 @@
 # From a filled cart, as a guest: logs in, fills shipping and payment, and stops on the review screen.
+# Each field is scrolled into view first and the keyboard is closed after typing: on a small screen the
+# keyboard covers the next field.
 appId: com.saucelabs.mydemoapp.android
 ---
 - tapOn: "View cart"
@@ -12,35 +14,20 @@ appId: com.saucelabs.mydemoapp.android
       PASSWORD: "10203040"
 
 - assertVisible: "Enter a shipping address"
-- tapOn: { id: "(.*:id/)?fullNameET" }
-- inputText: "Rebecca Winter"
-- tapOn: { id: "(.*:id/)?address1ET" }
-- inputText: "Mandorley 112"
-- tapOn: { id: "(.*:id/)?cityET" }
-- inputText: "Truro"
-- scrollUntilVisible:
-    element: { id: "(.*:id/)?zipET" }
-- tapOn: { id: "(.*:id/)?zipET" }
-- inputText: "89750"
-- scrollUntilVisible:
-    element: { id: "(.*:id/)?countryET" }
-- tapOn: { id: "(.*:id/)?countryET" }
-- inputText: "United Kingdom"
-- hideKeyboard
+- runFlow: { file: fill_field.yaml, env: { FIELD: "fullNameET", VALUE: "Rebecca Winter" } }
+- runFlow: { file: fill_field.yaml, env: { FIELD: "address1ET", VALUE: "Mandorley 112" } }
+- runFlow: { file: fill_field.yaml, env: { FIELD: "cityET", VALUE: "Truro" } }
+- runFlow: { file: fill_field.yaml, env: { FIELD: "zipET", VALUE: "89750" } }
+- runFlow: { file: fill_field.yaml, env: { FIELD: "countryET", VALUE: "United Kingdom" } }
 - scrollUntilVisible:
     element: "Saves user info for checkout"
 - tapOn: "Saves user info for checkout"
 
 - assertVisible: "Enter a payment method"
-- tapOn: { id: "(.*:id/)?nameET" }
-- inputText: "Rebecca Winter"
-- tapOn: { id: "(.*:id/)?cardNumberET" }
-- inputText: "3258125675687891"
-- tapOn: { id: "(.*:id/)?expirationDateET" }
-- inputText: "0325"
-- tapOn: { id: "(.*:id/)?securityCodeET" }
-- inputText: "123"
-- hideKeyboard
+- runFlow: { file: fill_field.yaml, env: { FIELD: "nameET", VALUE: "Rebecca Winter" } }
+- runFlow: { file: fill_field.yaml, env: { FIELD: "cardNumberET", VALUE: "3258125675687891" } }
+- runFlow: { file: fill_field.yaml, env: { FIELD: "expirationDateET", VALUE: "0325" } }
+- runFlow: { file: fill_field.yaml, env: { FIELD: "securityCodeET", VALUE: "123" } }
 - scrollUntilVisible:
     element: "Saves payment info and launches screen to review checkout data"
 - tapOn: "Saves payment info and launches screen to review checkout data"

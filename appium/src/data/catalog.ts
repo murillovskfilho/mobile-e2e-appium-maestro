@@ -1,13 +1,4 @@
 // Reference data for the app under test (My Demo App 2.3.0). Prices are in dollars as shown in the UI.
-export const PRODUCTS = {
-  backpack: { name: 'Sauce Labs Backpack', price: 29.99 },
-  bikeLight: { name: 'Sauce Labs Bike Light', price: 9.99 },
-  boltTShirt: { name: 'Sauce Labs Bolt T-Shirt', price: 15.99 },
-  fleeceJacket: { name: 'Sauce Labs Fleece Jacket', price: 49.99 },
-  onesie: { name: 'Sauce Labs Onesie', price: 7.99 },
-} as const
-
-export type Product = (typeof PRODUCTS)[keyof typeof PRODUCTS]
 
 export const SORT_OPTIONS = {
   nameAsc: 'Ascending order by name',
@@ -17,6 +8,22 @@ export const SORT_OPTIONS = {
 } as const
 
 export type SortOption = keyof typeof SORT_OPTIONS
+
+/**
+ * KNOWN DEFECT in the app (intentional, for demos): tapping the product in the 2nd grid position, or in
+ * the 7th position or later, crashes the app (ProductCatalogFragment builds a 6-entry array with a null in
+ * slot 1). Tests that need a product therefore sort the catalog so that product lands in the 1st position.
+ * `known-defects.spec.ts` pins the crash itself, so a fix is noticed.
+ */
+export const PRODUCTS = {
+  backpack: { name: 'Sauce Labs Backpack', price: 29.99, firstWhenSortedBy: 'nameAsc' },
+  onesie: { name: 'Sauce Labs Onesie', price: 7.99, firstWhenSortedBy: 'priceAsc' },
+} as const satisfies Record<string, { name: string; price: number; firstWhenSortedBy: SortOption }>
+
+export type Product = (typeof PRODUCTS)[keyof typeof PRODUCTS]
+
+/** The most expensive item in the catalog (several Fleece Jacket colours share it). */
+export const HIGHEST_PRICE = 49.99
 
 /** "$ 29.99" or "$29.99" → 29.99 */
 export const parsePrice = (text: string): number => {

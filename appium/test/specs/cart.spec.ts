@@ -10,7 +10,7 @@ import { freshApp } from '../../src/support/app.js'
 async function addToCart(product: Product, quantity = 1) {
   await header.goTo('Catalog')
   await catalogScreen.waitUntilShown()
-  await catalogScreen.openProduct(product.name)
+  await catalogScreen.openProduct(product)
   await productScreen.waitUntilShown()
   await productScreen.increase(quantity - 1)
   await productScreen.addToCart()
@@ -19,7 +19,6 @@ async function addToCart(product: Product, quantity = 1) {
 describe('Cart', () => {
   beforeEach(async () => {
     await freshApp()
-    await catalogScreen.waitUntilShown()
   })
 
   it('@smoke adding a product updates the cart badge', async () => {
@@ -31,7 +30,7 @@ describe('Cart', () => {
   })
 
   it('a quantity of zero disables Add to cart, and never goes negative', async () => {
-    await catalogScreen.openProduct(PRODUCTS.bikeLight.name)
+    await catalogScreen.openProduct(PRODUCTS.backpack)
     await productScreen.waitUntilShown()
 
     await productScreen.decrease(2)
@@ -63,23 +62,23 @@ describe('Cart', () => {
   })
 
   it('changing a quantity in the cart updates the total and the badge', async () => {
-    await addToCart(PRODUCTS.fleeceJacket)
+    await addToCart(PRODUCTS.onesie)
     await header.openCart()
     await cartScreen.waitUntilShown()
 
-    await cartScreen.increase(PRODUCTS.fleeceJacket.name)
+    await cartScreen.increase(PRODUCTS.onesie.name)
 
-    expect(await cartScreen.quantityOf(PRODUCTS.fleeceJacket.name)).toBe(2)
-    expect(await cartScreen.total()).toBe(totalOf([{ price: PRODUCTS.fleeceJacket.price, quantity: 2 }]))
+    expect(await cartScreen.quantityOf(PRODUCTS.onesie.name)).toBe(2)
+    expect(await cartScreen.total()).toBe(totalOf([{ price: PRODUCTS.onesie.price, quantity: 2 }]))
     await header.waitForCartCount(2)
   })
 
   it('removing the last item shows the empty state', async () => {
-    await addToCart(PRODUCTS.boltTShirt)
+    await addToCart(PRODUCTS.backpack)
     await header.openCart()
     await cartScreen.waitUntilShown()
 
-    await cartScreen.remove(PRODUCTS.boltTShirt.name)
+    await cartScreen.remove(PRODUCTS.backpack.name)
 
     await browser.waitUntil(() => cartScreen.isEmpty(), { timeoutMsg: 'empty cart state never showed' })
     expect(await header.cartCount()).toBe(0)

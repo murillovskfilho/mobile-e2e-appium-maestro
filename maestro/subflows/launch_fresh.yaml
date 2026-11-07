@@ -1,11 +1,15 @@
 # Starts the app with its data cleared, so every flow begins with an empty cart and no login.
 appId: com.saucelabs.mydemoapp.android
 ---
-- launchApp:
-    clearState: true
-    permissions:
-      all: allow
-# A cold start right after clearing data can take a while on a CI emulator (software GPU).
-- extendedWaitUntil:
-    visible: "Displays all products of catalog"
-    timeout: 60000
+# A cold start right after clearing data is occasionally left on a blank window on a CI emulator
+# (software GPU). One relaunch fixes it; a real app bug would fail every attempt and still fail the flow.
+- retry:
+    maxRetries: 2
+    commands:
+      - launchApp:
+          clearState: true
+          permissions:
+            all: allow
+      - extendedWaitUntil:
+          visible: "Displays all products of catalog"
+          timeout: 30000

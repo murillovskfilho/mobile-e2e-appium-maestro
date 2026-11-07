@@ -5,20 +5,31 @@ tags:
   - catalog
 ---
 - runFlow: ../../subflows/launch_fresh.yaml
-- scrollUntilVisible:
-    element: "Sauce Labs Backpack"
-    direction: DOWN
-    centerElement: true
+# Sorted by name, the Backpack is the first card (the 2nd card crashes the app: known defect).
+- tapOn: "Shows current sorting order and displays available sorting options"
+- tapOn: "Ascending order by name"
+- assertVisible:
+    id: "(.*:id/)?titleTV"
+    index: 0
+    text: "Sauce Labs Backpack"
+- assertVisible:
+    id: "(.*:id/)?priceTV"
+    index: 0
+    text: "\\$ 29\\.99"
 # Only the product image opens the product page; the title is not tappable.
 - tapOn:
     id: "(.*:id/)?productIV"
-    above: "Sauce Labs Backpack"
+    index: 0
 - assertVisible:
     id: "(.*:id/)?productTV"
     text: "Sauce Labs Backpack"
 - assertVisible:
     id: "(.*:id/)?priceTV"
     text: "\\$ 29\\.99"
+- scrollUntilVisible:
+    element:
+      id: "(.*:id/)?noTV"
+    direction: DOWN
 - assertVisible:
     id: "(.*:id/)?noTV"
     text: "1"

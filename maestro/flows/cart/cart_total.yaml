@@ -13,6 +13,7 @@ tags:
     file: ../../subflows/add_to_cart.yaml
     env:
       PRODUCT: "Sauce Labs Onesie"
+      SORT: "Ascending order by price"
       QUANTITY: "2"
 - assertVisible:
     id: "(.*:id/)?cartTV"

@@ -1,9 +1,12 @@
+import { $ } from '@wdio/globals'
+
 import { parsePrice } from '../data/catalog.js'
-import { byDesc } from '../support/selectors.js'
+import { byId, scrollToId } from '../support/selectors.js'
 import { BaseScreen } from './BaseScreen.js'
 
 class ProductScreen extends BaseScreen {
-  protected readonly anchor = byDesc('Tap to add product to cart')
+  // The rating row sits above the fold and exists only on this screen; Add to cart is below the fold.
+  protected readonly anchor = byId('rattingLL')
 
   async title(): Promise<string> {
     return this.textOf('productTV')
@@ -14,7 +17,8 @@ class ProductScreen extends BaseScreen {
   }
 
   async quantity(): Promise<number> {
-    return Number(await this.textOf('noTV'))
+    const counter = await $(scrollToId('noTV'))
+    return Number(await counter.getText())
   }
 
   async increase(times = 1) {
@@ -26,7 +30,8 @@ class ProductScreen extends BaseScreen {
   }
 
   async canAddToCart(): Promise<boolean> {
-    return this.el('cartBt').isEnabled()
+    const button = await $(scrollToId('cartBt'))
+    return button.isEnabled()
   }
 
   async addToCart() {

@@ -1,0 +1,12 @@
+# Types VALUE into the text field whose resource-id ends with FIELD, scrolling it into view first and
+# closing the keyboard afterwards. The YAML counterpart of BaseScreen.type() in the Appium suite.
+appId: com.saucelabs.mydemoapp.android
+---
+- scrollUntilVisible:
+    element:
+      id: "(.*:id/)?${FIELD}"
+    direction: DOWN
+- tapOn:
+    id: "(.*:id/)?${FIELD}"
+- inputText: ${VALUE}
+- hideKeyboard

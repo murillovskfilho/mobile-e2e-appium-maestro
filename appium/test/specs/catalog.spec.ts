@@ -1,6 +1,6 @@
 import { expect } from '@wdio/globals'
 
-import { PRODUCTS } from '../../src/data/catalog.js'
+import { HIGHEST_PRICE, PRODUCTS } from '../../src/data/catalog.js'
 import { catalogScreen } from '../../src/screens/CatalogScreen.js'
 import { productScreen } from '../../src/screens/ProductScreen.js'
 import { freshApp } from '../../src/support/app.js'
@@ -13,7 +13,6 @@ const byName = (a: string, b: string) => a.localeCompare(b, 'en', { sensitivity:
 describe('Catalog', () => {
   before(async () => {
     await freshApp()
-    await catalogScreen.waitUntilShown()
   })
 
   it('@smoke lists products with a name and a price', async () => {
@@ -45,6 +44,7 @@ describe('Catalog', () => {
 
     expect(isSorted(items.map(i => i.price), (a, b) => a - b)).toBe(true)
     // The cheapest product in the catalog leads the list.
+    expect(items[0]?.name).toBe(PRODUCTS.onesie.name)
     expect(items[0]?.price).toBe(PRODUCTS.onesie.price)
   })
 
@@ -53,12 +53,11 @@ describe('Catalog', () => {
     const items = await catalogScreen.visibleItems()
 
     expect(isSorted(items.map(i => i.price), (a, b) => b - a)).toBe(true)
-    expect(items[0]?.price).toBe(PRODUCTS.fleeceJacket.price)
+    expect(items[0]?.price).toBe(HIGHEST_PRICE)
   })
 
   it('opens a product with the same name and price it had in the list', async () => {
-    await catalogScreen.sortBy('nameAsc')
-    await catalogScreen.openProduct(PRODUCTS.backpack.name)
+    await catalogScreen.openProduct(PRODUCTS.backpack)
     await productScreen.waitUntilShown()
 
     expect(await productScreen.title()).toBe(PRODUCTS.backpack.name)

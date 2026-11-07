@@ -16,7 +16,7 @@ describe('App lifecycle', () => {
   })
 
   it('keeps the cart and the current screen after going to the background', async () => {
-    await catalogScreen.openProduct(PRODUCTS.backpack.name)
+    await catalogScreen.openProduct(PRODUCTS.backpack)
     await productScreen.waitUntilShown()
     await productScreen.addToCart()
     await header.waitForCartCount(1)

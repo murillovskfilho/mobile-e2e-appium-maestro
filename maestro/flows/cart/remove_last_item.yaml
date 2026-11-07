@@ -7,7 +7,7 @@ tags:
 - runFlow:
     file: ../../subflows/add_to_cart.yaml
     env:
-      PRODUCT: "Sauce Labs Bolt T-Shirt"
+      PRODUCT: "Sauce Labs Backpack"
 - tapOn: "View cart"
 - tapOn: "Removes product from cart"
 - assertVisible: "No Items"

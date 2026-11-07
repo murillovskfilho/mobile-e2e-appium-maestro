@@ -16,7 +16,7 @@ import { productScreen } from '../../src/screens/ProductScreen.js'
 import { freshApp } from '../../src/support/app.js'
 
 async function cartWithBackpack() {
-  await catalogScreen.openProduct(PRODUCTS.backpack.name)
+  await catalogScreen.openProduct(PRODUCTS.backpack)
   await productScreen.waitUntilShown()
   await productScreen.addToCart()
   await header.waitForCartCount(1)

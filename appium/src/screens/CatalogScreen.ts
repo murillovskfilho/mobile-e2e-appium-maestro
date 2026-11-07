@@ -1,6 +1,6 @@
 import { $, $$ } from '@wdio/globals'
 
-import { parsePrice, SORT_OPTIONS, type SortOption } from '../data/catalog.js'
+import { parsePrice, SORT_OPTIONS, type Product, type SortOption } from '../data/catalog.js'
 import { APP_PACKAGE, byDesc, byId } from '../support/selectors.js'
 import { BaseScreen } from './BaseScreen.js'
 import { header } from './Header.js'
@@ -25,12 +25,24 @@ class CatalogScreen extends BaseScreen {
   }
 
   /**
-   * Only the product image opens the product page; the title is not tappable. Scrolls the title into view,
-   * then taps the image of the same grid cell.
+   * Opens a product's page. Sorts first so the product is the first card (see the known defect in
+   * `data/catalog.ts`), checks that it is, then taps its image: the title is not tappable in this app.
    */
-  async openProduct(name: string) {
-    await this.scrollToText(name)
-    await $(`//*[@resource-id="${APP_PACKAGE}:id/titleTV" and @text="${name}"]/../*[@resource-id="${APP_PACKAGE}:id/productIV"]`).click()
+  async openProduct(product: Product) {
+    await this.sortBy(product.firstWhenSortedBy)
+    const first = (await this.visibleItems())[0]
+    if (first?.name !== product.name) {
+      throw new Error(`Expected "${product.name}" first after sorting by ${product.firstWhenSortedBy}, got "${first?.name}"`)
+    }
+    await this.tapCardImage(0)
+  }
+
+  /** Taps the image of the card at this position among the cards on screen (0 = first). */
+  async tapCardImage(position: number) {
+    const images = await $$(`id=${APP_PACKAGE}:id/productIV`)
+    const image = images[position]
+    if (!image) throw new Error(`No product card at position ${position}`)
+    await image.click()
   }
 }
 
