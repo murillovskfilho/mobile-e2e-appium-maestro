@@ -15,11 +15,24 @@ class CartScreen extends BaseScreen {
    * is the clearest locator: from the product's title, up to the nearest ancestor that also holds the
    * control, then down to it. Works whatever the row's internal nesting is.
    */
-  private row(name: string, childId: string) {
-    return $(
-      `//*[@resource-id="${rid('titleTV')}" and @text="${name}"]` +
-        `/ancestor::*[.//*[@resource-id="${rid(childId)}"]][1]//*[@resource-id="${rid(childId)}"]`,
+  //
+  // The XPath is scoped to one direct child of the list (one row), so it can never fall through to the
+  // row above. A row partly below the fold is not fully in the UI tree, so the list is nudged until the
+  // control is on screen.
+  private async row(name: string, childId: string) {
+    const control = $(
+      `//*[@resource-id="${rid('productRV')}"]/*[.//*[@resource-id="${rid('titleTV')}" and @text="${name}"]]` +
+        `//*[@resource-id="${rid(childId)}"]`,
     )
+    await this.scrollToText(name)
+    for (let nudge = 0; nudge < 3 && !(await control.isExisting()); nudge++) {
+      await driver.execute('mobile: scrollGesture', {
+        elementId: await $(byId('productRV')).elementId,
+        direction: 'down',
+        percent: 0.4,
+      })
+    }
+    return control
   }
 
   async isEmpty(): Promise<boolean> {
@@ -27,19 +40,19 @@ class CartScreen extends BaseScreen {
   }
 
   async quantityOf(name: string): Promise<number> {
-    return Number(await this.row(name, 'noTV').getText())
+    return Number(await (await this.row(name, 'noTV')).getText())
   }
 
   async increase(name: string) {
-    await this.row(name, 'plusIV').click()
+    await (await this.row(name, 'plusIV')).click()
   }
 
   async decrease(name: string) {
-    await this.row(name, 'minusIV').click()
+    await (await this.row(name, 'minusIV')).click()
   }
 
   async remove(name: string) {
-    await this.row(name, 'removeBt').click()
+    await (await this.row(name, 'removeBt')).click()
   }
 
   async itemCount(): Promise<number> {

@@ -86,8 +86,9 @@ describe('Checkout', () => {
     await shippingAddressScreen.fill({ address2: SHIPPING.address2, state: SHIPPING.state })
     await shippingAddressScreen.continueToPayment()
 
-    expect(await shippingAddressScreen.isShown()).toBe(true)
+    // Still on the shipping step (visibleErrors scrolls back up to its heading), with the error shown.
     expect(await paymentScreen.isShown()).toBe(false)
     expect(await shippingAddressScreen.visibleErrors()).toContain('Please provide your full name.')
+    expect(await shippingAddressScreen.isShown()).toBe(true)
   })
 })
