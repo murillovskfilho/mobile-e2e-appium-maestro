@@ -1,0 +1,18 @@
+11-07 02:47:48.641 E/AndroidRuntime( 8551): Process: com.saucelabs.mydemoapp.android, PID: 8551
+11-07 02:47:48.641 E/AndroidRuntime( 8551): java.lang.ArrayIndexOutOfBoundsException: length=6; index=6
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at com.saucelabs.mydemoapp.android.view.fragments.ProductCatalogFragment.lambda$setAdapter$0$ProductCatalogFragment(ProductCatalogFragment.java:156)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at com.saucelabs.mydemoapp.android.view.fragments.ProductCatalogFragment$$ExternalSyntheticLambda0.OnClick(Unknown Source:4)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at com.saucelabs.mydemoapp.android.view.adapters.ProductsAdapter$1.onClick(ProductsAdapter.java:57)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at android.view.View.performClick(View.java:7659)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at android.view.View.performClickInternal(View.java:7636)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at android.view.View.-$$Nest$mperformClickInternal(Unknown Source:0)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at android.view.View$PerformClick.run(View.java:30156)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at android.os.Handler.handleCallback(Handler.java:958)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at android.os.Looper.loopOnce(Looper.java:205)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at android.os.Looper.loop(Looper.java:294)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at android.app.ActivityThread.main(ActivityThread.java:8177)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at java.lang.reflect.Method.invoke(Native Method)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:552)
+11-07 02:47:48.641 E/AndroidRuntime( 8551): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:971)
+

@@ -37,6 +37,15 @@ SHA-256, so every run tests exactly the same build. The APK is never committed.
 Why some scenarios exist in only one suite, and how I'd split the two tools on a team:
 [docs/appium-vs-maestro.md](docs/appium-vs-maestro.md).
 
+## Known defects
+
+The suites found a crash in the app on CI: tapping the product in the 2nd catalog position, or in the
+7th onwards, kills the app (`ArrayIndexOutOfBoundsException` in `ProductCatalogFragment`). Tests work
+around it by sorting so the product they need is first, and
+[`known-defects.spec.ts`](appium/test/specs/known-defects.spec.ts) pins the crash so the suite fails
+the day it is fixed. Full bug report with logcat, steps and probable cause:
+[docs/bug-report-catalog-crash.md](docs/bug-report-catalog-crash.md).
+
 ## Design decisions
 
 - **Same scenarios, two tools.** It makes the comparison honest: the trade-offs in the docs come from
