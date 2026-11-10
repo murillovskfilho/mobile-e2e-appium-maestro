@@ -57,7 +57,7 @@ the day it is fixed. Full bug report with logcat, steps and probable cause:
   accessibility check), then visible text for data. The only XPath is the cart row, which has no id of
   its own, and it is explained where it is used.
 - **Money in cents.** Expected totals are computed as integers (`totalOf` in TypeScript,
-  `expected_total.js` in Maestro), so 3 × $29.99 is $89.97 and never $89.97000000000001.
+  `expected_total.js` in Maestro), so 4 × $29.99 plus the $5.99 delivery is $125.95 and never $125.94999999999999.
 - **Checked against the source.** Expected messages, prices and rules (quantity can reach zero, the flat
   delivery fee) were taken from the app's source code, not guessed from screenshots.
 - **Reproducible environment.** Pinned app version and checksum, pinned Appium, driver and Maestro

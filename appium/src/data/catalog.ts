@@ -32,6 +32,6 @@ export const parsePrice = (text: string): number => {
   return value
 }
 
-/** Money arithmetic in cents, so 3 × 29.99 is 89.97 and not 89.97000000000001. */
+/** Money arithmetic in cents, so 4 × 29.99 + 5.99 is 125.95 and not 125.94999999999999. */
 export const totalOf = (lines: Array<{ price: number; quantity: number }>): number =>
   lines.reduce((cents, line) => cents + Math.round(line.price * 100) * line.quantity, 0) / 100

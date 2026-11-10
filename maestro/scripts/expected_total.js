@@ -1,4 +1,4 @@
-// Computes the cart total the UI should show, in integer cents so 3 x 29.99 is 89.97 and not 89.97000000000001.
+// Computes the cart total the UI should show, in integer cents so 4 x 29.99 + 5.99 is 125.95 and not 125.94999999999999.
 // Input (env): LINES, as "price*quantity" pairs separated by commas, e.g. "29.99*3,7.99*2". Optional DELIVERY.
 // Output: output.expectedTotal, formatted the way the app formats money ("$ 105.95").
 const cents = LINES.split(',').reduce((sum, line) => {
